@@ -54,15 +54,15 @@ const pokemon = ({ pokemonData }) => {
           <div className={`flex justify-between`} style={{ color: `var(--${pokemonData.types[0]})`}}>
             <div className='flex flex-col w-1/3'>
               <p className='font-semibold'>{pokemonData.category.slice(0, -8)}</p>
-              <p className='text-xs text-gray-400'>Category</p>
+              <p className='text-xs text-gray-500'>Category</p>
             </div>
             <div className='flex flex-col w-1/3 border-x-2 border-slate-300'>
               <p className='font-semibold'>{pokemonData.height/10} m</p>
-              <p className='text-xs text-gray-400'>Height</p>
+              <p className='text-xs text-gray-500'>Height</p>
             </div>
             <div className='flex flex-col w-1/3'>
               <p className='font-semibold'>{pokemonData.weight/10} kg</p>
-              <p className='text-xs text-gray-400'>Weight</p>
+              <p className='text-xs text-gray-500'>Weight</p>
             </div>
           </div>
 
@@ -70,11 +70,10 @@ const pokemon = ({ pokemonData }) => {
 
             <div className='flex flex-col w-1/2 border-r-2 border-slate-300'>
               <p className='font-semibold capitalize'>{pokemonData.abilities[0]}</p>
-              <p className='text-xs text-gray-400'>Ability</p>
+              <p className='text-xs text-gray-500'>Ability</p>
             </div>
 
             <div className='flex flex-col items-center w-1/2'>
-              {/* <p className='font-semibold'>{(pokemonData.gender_rate/8)*100}</p> */}
               <div>
                 {(isMale && isFemale) ? 
                   <div className='flex space-x-2'>
@@ -100,7 +99,7 @@ const pokemon = ({ pokemonData }) => {
                 : <p className='font-semibold'>Unknown</p>
                 }
               </div>
-              <p className='text-xs text-gray-400'>Gender</p>
+              <p className='text-xs text-gray-500'>Gender</p>
             </div>
           </div>
         </div>
@@ -111,8 +110,8 @@ const pokemon = ({ pokemonData }) => {
           <div className='flex flex-col'>
             {pokemonData.stats.map((stat, index) => (
               <div key={stat.stat.name} className='flex justify-between items-center'>
-                <span className={`text-right w-4/12 border-r-2 px-2 uppercase text-sm`} style={{ color: `var(--${pokemonData.types[0]})`}}>{statsNames[index]}</span>
-                <span className={`text-right text-xs w-1/12 px-2`} style={{ color: `var(--${pokemonData.types[0]})`}}>{stat.base_stat}</span>
+                <span className={`text-right text-gray-500 w-4/12 border-r-2 px-2 uppercase text-sm`}>{statsNames[index]}</span>
+                <span className={`text-right text-gray-500 text-xs w-1/12 px-2`}>{stat.base_stat}</span>
                 <div className="rounded-full w-8/12 h-2.5 bg-gray-300 ml-2">
                   <div className={`h-2.5 rounded-full`} style={{ width: `${statsPercentage(stat.base_stat)}%`, backgroundColor: `var(--${pokemonData.types[0]})`}}></div>
                 </div>

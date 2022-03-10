@@ -4,7 +4,7 @@ import Footer from '../Footer';
 
 const Layout = ({ title, children }) => {
   return (
-    <div className='min-h-screen mx-auto px-8 bg-slate-50 overflow-hidden'>
+    <div className='flex flex-col justify-between min-h-screen mx-auto px-8 bg-slate-50 overflow-hidden'>
       <Head>
         <title>{title}</title>
       </Head>
