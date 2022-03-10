@@ -1,15 +1,13 @@
 import React from 'react';
 import Head from 'next/head';
-import Header from '../Header';
 import Footer from '../Footer';
 
 const Layout = ({ title, children }) => {
   return (
-    <div className='container mx-auto bg-yellow-100'>
+    <div className='min-h-screen mx-auto px-8 bg-slate-50 overflow-hidden'>
       <Head>
         <title>{title}</title>
       </Head>
-      <Header />
       <main className=''>
         {children}
       </main>
