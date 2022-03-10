@@ -40,7 +40,7 @@ const pokemon = ({ pokemonData }) => {
         {/* Types */}
         <div className='flex justify-center w-full max-w-md text-center space-x-8 mb-6'>
           {pokemonData.types.map((type, index) => (
-            <span key={index} className={`inline-block w-1/2 py-1 rounded-full text-white font-semibold capitalize background-${type}`}>{type}</span>
+            <span key={index} className={`inline-block w-1/2 py-1 rounded-full text-white font-semibold capitalize`} style={{ backgroundColor: `var(--${type})` }}>{type}</span>
           ))}
         </div>
 
@@ -51,7 +51,7 @@ const pokemon = ({ pokemonData }) => {
 
         {/* Information */}
         <div className='w-full max-w-md mb-6 flex flex-col space-y-3 text-center'>
-          <div className={`flex justify-between text-color-${pokemonData.types[0]}`}>
+          <div className={`flex justify-between`} style={{ color: `var(--${pokemonData.types[0]})`}}>
             <div className='flex flex-col w-1/3'>
               <p className='font-semibold'>{pokemonData.category.slice(0, -8)}</p>
               <p className='text-xs text-gray-400'>Category</p>
@@ -66,7 +66,7 @@ const pokemon = ({ pokemonData }) => {
             </div>
           </div>
 
-          <div className={`flex justify-between text-color-${pokemonData.types[0]}`}>
+          <div className={`flex justify-between`} style={{ color: `var(--${pokemonData.types[0]})`}}>
 
             <div className='flex flex-col w-1/2 border-r-2 border-slate-300'>
               <p className='font-semibold capitalize'>{pokemonData.abilities[0]}</p>
@@ -78,22 +78,22 @@ const pokemon = ({ pokemonData }) => {
               <div>
                 {(isMale && isFemale) ? 
                   <div className='flex space-x-2'>
-                    <svg width="24px" height="24px" viewBox="-2.5 -2.5 24 24" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin" className={`fill-color-${pokemonData.types[0]}`}>
+                    <svg width="24px" height="24px" viewBox="-2.5 -2.5 24 24" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin" style={{ fill: `var(--${pokemonData.types[0]})`}}>
                       <path d='M4.364 14.636a5 5 0 1 0 7.071-7.071 5 5 0 0 0-7.071 7.071zm7.728-9.142l2.553-2.553h-1.517a1 1 0 0 1 0-2h4a.997.997 0 0 1 1 1v4a1 1 0 1 1-2 0V4.286l-2.622 2.622A7.002 7.002 0 0 1 2.95 16.05a7 7 0 0 1 9.142-10.556z'/>
                     </svg>
-                    <svg width="24px" height="24px" viewBox="-5 -2 24 24" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin" className={`fill-color-${pokemonData.types[0]}`}>
+                    <svg width="24px" height="24px" viewBox="-5 -2 24 24" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin" style={{ fill: `var(--${pokemonData.types[0]})`}}>
                       <path d='M7 12A5 5 0 1 0 7 2a5 5 0 0 0 0 10zm1 4h1a1 1 0 0 1 0 2H8v1a1 1 0 0 1-2 0v-1H5a1 1 0 0 1 0-2h1v-2c0-.024 0-.047.002-.07A7.002 7.002 0 0 1 7 0a7 7 0 0 1 .998 13.93L8 14v2z'/>
                     </svg>
                   </div> 
                 : (isMale && !isFemale) ?
                   <div>
-                    <svg width="24px" height="24px" viewBox="-2.5 -2.5 24 24" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin" className={`fill-color-${pokemonData.types[0]}`}>
+                    <svg width="24px" height="24px" viewBox="-2.5 -2.5 24 24" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin" style={{ fill: `var(--${pokemonData.types[0]})`}}>
                       <path d='M4.364 14.636a5 5 0 1 0 7.071-7.071 5 5 0 0 0-7.071 7.071zm7.728-9.142l2.553-2.553h-1.517a1 1 0 0 1 0-2h4a.997.997 0 0 1 1 1v4a1 1 0 1 1-2 0V4.286l-2.622 2.622A7.002 7.002 0 0 1 2.95 16.05a7 7 0 0 1 9.142-10.556z'/>
                     </svg>
                   </div>
                 : (!isMale && isFemale) ?
                   <div>
-                    <svg width="24px" height="24px" viewBox="-5 -2 24 24" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin" className={`fill-color-${pokemonData.types[0]}`}>
+                    <svg width="24px" height="24px" viewBox="-5 -2 24 24" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin" style={{ fill: `var(--${pokemonData.types[0]})`}}>
                       <path d='M7 12A5 5 0 1 0 7 2a5 5 0 0 0 0 10zm1 4h1a1 1 0 0 1 0 2H8v1a1 1 0 0 1-2 0v-1H5a1 1 0 0 1 0-2h1v-2c0-.024 0-.047.002-.07A7.002 7.002 0 0 1 7 0a7 7 0 0 1 .998 13.93L8 14v2z'/>
                     </svg>
                   </div> 
@@ -107,14 +107,14 @@ const pokemon = ({ pokemonData }) => {
 
         {/* stats */}
         <div className='mb-6 w-full max-w-md text-center'>
-          <p className={`text-lg font-semibold text-color-${pokemonData.types[0]} mb-2`}>Base Stats</p>
+          <p className={`text-lg font-semibold mb-2`} style={{ color: `var(--${pokemonData.types[0]})`}}>Base Stats</p>
           <div className='flex flex-col'>
             {pokemonData.stats.map((stat, index) => (
               <div key={stat.stat.name} className='flex justify-between items-center'>
-                <span className={`text-right w-4/12 border-r-2 px-2 uppercase text-sm text-color-${pokemonData.types[0]}`}>{statsNames[index]}</span>
-                <span className={`text-right text-xs w-1/12 px-2 text-color-${pokemonData.types[0]}`}>{stat.base_stat}</span>
+                <span className={`text-right w-4/12 border-r-2 px-2 uppercase text-sm`} style={{ color: `var(--${pokemonData.types[0]})`}}>{statsNames[index]}</span>
+                <span className={`text-right text-xs w-1/12 px-2`} style={{ color: `var(--${pokemonData.types[0]})`}}>{stat.base_stat}</span>
                 <div className="rounded-full w-8/12 h-2.5 bg-gray-300 ml-2">
-                  <div className={`background-${pokemonData.types[0]} h-2.5 rounded-full`} style={{ width: `${statsPercentage(stat.base_stat)}%`}}></div>
+                  <div className={`h-2.5 rounded-full`} style={{ width: `${statsPercentage(stat.base_stat)}%`, backgroundColor: `var(--${pokemonData.types[0]})`}}></div>
                 </div>
               </div>
             ))}
