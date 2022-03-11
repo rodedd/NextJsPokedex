@@ -57,6 +57,7 @@ export default function Home({ pokemonList }) {
       />
 
       <ul className='w-full max-w-2xl space-y-4 my-8 mx-auto'>
+
         {(!searchValue.length >= 1) && pokemonList20.map((poke) => (
           <li key={poke.id}>
             <Link href={`/pokemon?id=${poke.id}`}>
@@ -76,6 +77,7 @@ export default function Home({ pokemonList }) {
             </Link>
           </li>
         ))}
+        
       </ul>
       
       {(!searchValue.length >= 1) &&
@@ -94,7 +96,7 @@ export default function Home({ pokemonList }) {
 export async function getStaticProps() {
   try {
     let pokemonArray = [];
-    const pokemonNumber = 40;
+    const pokemonNumber = 898;
 
     const getPokemon = async (id) => {
       const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
