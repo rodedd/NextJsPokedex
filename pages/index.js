@@ -6,12 +6,15 @@ import SearchBar from '../components/SearchBar';
 import NavButtons from '../components/NavButtons';
 import PokemonCard from '../components/PokemonCard';
 
-export default function Home({ pokemonList }) {
+export default function Home({ pokemonList, typesData }) {
+
+  console.log(pokemonList)
 
   const [listStart, setListStart] = useState(0);
   const [listEnd, setListEnd] = useState(20);
-  const [ pokemonList20, setPokemonList20 ] = useState(pokemonList.slice(listStart, listEnd));
+  const [pokemonList20, setPokemonList20] = useState(pokemonList.slice(listStart, listEnd));
   const [searchValue, setSearchValue] = useState('');
+  const [filteredPokemon, setFilteredPokemon] = useState([]);
 
   const nextPage = () => {
     setListStart(listStart + 20);
@@ -42,6 +45,15 @@ export default function Home({ pokemonList }) {
       return pokemonNameLowerCase.includes(searchedPokemonLowerCase);
     });
   };
+
+  const filterByType = (type) => {
+    setFilteredPokemon(pokemonList.filter(pokemon => (pokemon.types[0] === type || pokemon.types[1] === type)))
+  }
+
+  const clearFilter = () => {
+    setFilteredPokemon([]);
+  }
+  console.log(filteredPokemon.length)
   
   return (
     <Layout title='Pokédex'>
@@ -56,13 +68,48 @@ export default function Home({ pokemonList }) {
         onSearchValueChange={onSearchValueChange}
       />
 
+      {/* Filter by types */}
+        {(!searchValue.length >= 1) &&
+          <div className='w-full max-w-2xl mx-auto my-8'>
+            <div className='flex justify-between items-center'>
+              <p className='font-medium'>Filter by type</p>
+              {filteredPokemon.length != 0 &&
+                <span onClick={clearFilter} className='text-sm text-red-500 ring-2 ring-red-500 rounded-full px-2 cursor-pointer'>Clear filters <span>&#10754;</span></span>
+              }
+            </div>
+            <ul className='flex w-full py-4 space-x-2 overflow-x-scroll'>
+              {typesData.map((type) => (
+                <li
+                  key={type.name}
+                  className='flex-none w-20 text-center text-xs text-black font-semibold rounded-full px-4 pt-[4px] pb-[6px] capitalize cursor-pointer'
+                  style={{ backgroundColor: `var(--${type.name})`}}
+                  onClick={() => filterByType(type.name)}
+                >
+                  {type.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+        }
+
+      {/* Display the pokemon cards */}
       <ul className='w-full max-w-2xl space-y-4 my-8 mx-auto'>
 
-        {(!searchValue.length >= 1) && pokemonList20.map((poke) => (
+        {(!searchValue.length >= 1 && filteredPokemon.length === 0) && pokemonList20.map((poke) => (
           <li key={poke.id}>
             <Link href={`/pokemon?id=${poke.id}`}>
               <a>
                 <PokemonCard poke={poke}/>
+              </a>
+            </Link>
+          </li>
+        ))}
+
+        {(!searchValue.length >= 1 && filteredPokemon.length != 0) && filteredPokemon.map((poke) => (
+          <li key={poke.id}>
+            <Link href={`/pokemon?id=${poke.id}`}>
+              <a>
+                <PokemonCard poke={poke} />
               </a>
             </Link>
           </li>
@@ -77,10 +124,17 @@ export default function Home({ pokemonList }) {
             </Link>
           </li>
         ))}
+
+        {(searchValue.length >= 1 && searchedPokemon.length === 0) && 
+          <li className='w-full h-full text-center text-xl'>
+            Ningún resultado coincide con tu búsqueda :(
+          </li>
+        }
+
         
       </ul>
       
-      {(!searchValue.length >= 1) &&
+      {(!searchValue.length >= 1 && filteredPokemon.length === 0) &&
         <NavButtons
           previousPage={previousPage}
           nextPage={nextPage}
@@ -95,6 +149,11 @@ export default function Home({ pokemonList }) {
 
 export async function getStaticProps() {
   try {
+
+    const fetchTypes = await fetch('https://pokeapi.co/api/v2/type/');
+    const typesObj = await fetchTypes.json();
+    const typesData = typesObj.results;
+
     let pokemonArray = [];
     const pokemonNumber = 898;
 
@@ -122,7 +181,7 @@ export async function getStaticProps() {
     });
     
   return {
-    props: { pokemonList },
+    props: { pokemonList, typesData },
   };
   
   } catch (error) {
