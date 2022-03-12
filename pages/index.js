@@ -11,8 +11,6 @@ import usePokemon from '../hooks/usePokemon';
 import NoResults from '../components/NoResults';
 
 export default function Home({ pokemonList }) {
-
-  console.log(pokemonList)
   
   const {
     states,
@@ -59,47 +57,25 @@ export default function Home({ pokemonList }) {
       }
 
       {/* Display the pokemon cards */}
-      <ul className='w-full max-w-2xl space-y-4 my-8 mx-auto'>
+      {/* Display normal list */}
+      {(!searchValue.length >= 1 && filteredPokemon.length === 0) &&
+        <PokemonCard pokemonList={pokemonToShow}/>
+      }
 
-        {/* Display normal list */}
-        {(!searchValue.length >= 1 && filteredPokemon.length === 0) && pokemonToShow.map((poke) => (
-          <li key={poke.id}>
-            <Link href={`/pokemon?id=${poke.id}`}>
-              <a>
-                <PokemonCard poke={poke}/>
-              </a>
-            </Link>
-          </li>
-        ))}
+      {/* Display filtered by types list */}
+      {(!searchValue.length >= 1 && filteredPokemon.length != 0) && 
+        <PokemonCard pokemonList={filteredPokemon}/>
+      }
 
-        {/* Display filtered by types list */}
-        {(!searchValue.length >= 1 && filteredPokemon.length != 0) && filteredPokemon.map((poke) => (
-          <li key={poke.id}>
-            <Link href={`/pokemon?id=${poke.id}`}>
-              <a>
-                <PokemonCard poke={poke} />
-              </a>
-            </Link>
-          </li>
-        ))}
+      {/* Display searched list */}
+      {(searchValue.length >= 1) && 
+        <PokemonCard pokemonList={searchedPokemon}/>
+      }
 
-        {/* Display searched list */}
-        {(searchValue.length >= 1) && searchedPokemon.map((poke) => (
-          <li key={poke.id}>
-            <Link href={`/pokemon?id=${poke.id}`}>
-              <a>
-                <PokemonCard poke={poke} />
-              </a>
-            </Link>
-          </li>
-        ))}
-
-        {/* No results */}
-        {(searchValue.length >= 1 && searchedPokemon.length === 0) && 
-          <NoResults />
-        }
-
-      </ul>
+      {/* No results */}
+      {(searchValue.length >= 1 && searchedPokemon.length === 0) && 
+        <NoResults />
+      }
       
       {/* Display nav buttons only on the normal list */}
       {(!searchValue.length >= 1 && filteredPokemon.length === 0) &&
@@ -111,6 +87,7 @@ export default function Home({ pokemonList }) {
           fullListLength={pokemonList.length}
         />
       }
+
     </Layout>
   );
 };
