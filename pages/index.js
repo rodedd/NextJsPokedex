@@ -9,6 +9,7 @@ import TypesFilter from '../components/TypesFilter';
 
 import usePokemon from '../hooks/usePokemon';
 import NoResults from '../components/NoResults';
+import Header from '../components/Header';
 
 export default function Home({ pokemonList }) {
   
@@ -36,10 +37,7 @@ export default function Home({ pokemonList }) {
   return (
     <Layout title='Pokédex'>
 
-      <div className='w-full flex items-center justify-center space-x-2 my-8'>
-        <Image src="/icons8-pokeball-50.png" alt="Pokedex icono" width={30} height={30} layout='fixed' />
-        <h1 className='text-3xl font-bold'>Pokédex</h1>
-      </div>
+      <Header />
 
       {/* Searchbar */}
       <SearchBar
