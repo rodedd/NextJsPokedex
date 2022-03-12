@@ -11,7 +11,7 @@ const SearchBar = ({ searchValue, onSearchValueChange }) => {
         onChange={onSearchValueChange}
       />
     </div>
-  )
-}
+  );
+};
 
 export default SearchBar;

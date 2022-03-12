@@ -43,7 +43,7 @@ const NavButtons = ({ previousPage, nextPage, listStart, listEnd, fullListLength
         </button>
       }
     </div>
-  )
-}
+  );
+};
 
 export default NavButtons;

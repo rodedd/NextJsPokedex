@@ -1,15 +1,12 @@
-import Image from 'next/image';
-import Link from 'next/link';
-
 import Layout from '../components/Layout';
+import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
 import NavButtons from '../components/NavButtons';
 import PokemonCard from '../components/PokemonCard';
 import TypesFilter from '../components/TypesFilter';
+import NoResults from '../components/NoResults';
 
 import usePokemon from '../hooks/usePokemon';
-import NoResults from '../components/NoResults';
-import Header from '../components/Header';
 
 export default function Home({ pokemonList }) {
   
