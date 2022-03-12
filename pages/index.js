@@ -6,27 +6,49 @@ import SearchBar from '../components/SearchBar';
 import NavButtons from '../components/NavButtons';
 import PokemonCard from '../components/PokemonCard';
 
-export default function Home({ pokemonList, typesData }) {
+export default function Home({ pokemonList }) {
 
   console.log(pokemonList)
+  const pokemonLimit = 20;
 
   const [listStart, setListStart] = useState(0);
-  const [listEnd, setListEnd] = useState(20);
-  const [pokemonList20, setPokemonList20] = useState(pokemonList.slice(listStart, listEnd));
+  const [listEnd, setListEnd] = useState(pokemonLimit);
+  const [pokemonToShow, setPokemonToShow] = useState(pokemonList.slice(listStart, listEnd));
   const [searchValue, setSearchValue] = useState('');
   const [filteredPokemon, setFilteredPokemon] = useState([]);
 
+  const typesData = [
+    'normal',
+    'grass',
+    'water',
+    'fire',
+    'electric',
+    'flying',
+    'fighting',
+    'psychic',
+    'dark',
+    'ghost',
+    'ice',
+    'dragon',
+    'ground',
+    'rock',
+    'bug',
+    'poison',
+    'steel',
+    'fairy',
+  ]
+
   const nextPage = () => {
-    setListStart(listStart + 20);
-    setListEnd(listEnd + 20);
-    setPokemonList20(pokemonList.slice((listStart + 20), (listEnd + 20)))
+    setListStart(listStart + pokemonLimit);
+    setListEnd(listEnd + pokemonLimit);
+    setPokemonToShow(pokemonList.slice((listStart + pokemonLimit), (listEnd + pokemonLimit)))
   }
 
   const previousPage = () => {
     if(listStart != 0) {
-      setListStart(listStart - 20);
-      setListEnd(listEnd - 20);
-      setPokemonList20(pokemonList.slice((listStart - 20), (listEnd - 20)))
+      setListStart(listStart - pokemonLimit);
+      setListEnd(listEnd - pokemonLimit);
+      setPokemonToShow(pokemonList.slice((listStart - pokemonLimit), (listEnd - pokemonLimit)))
     }
   }
 
@@ -37,7 +59,7 @@ export default function Home({ pokemonList, typesData }) {
   let searchedPokemon = [];
 
   if(!searchValue.length >= 1) {
-    searchedPokemon = pokemonList20;
+    searchedPokemon = pokemonToShow;
   } else {
     searchedPokemon = pokemonList.filter(pokemon => {
       const pokemonNameLowerCase = pokemon.name.toLowerCase();
@@ -53,7 +75,6 @@ export default function Home({ pokemonList, typesData }) {
   const clearFilter = () => {
     setFilteredPokemon([]);
   }
-  console.log(filteredPokemon.length)
   
   return (
     <Layout title='Pokédex'>
@@ -80,12 +101,12 @@ export default function Home({ pokemonList, typesData }) {
             <ul className='flex w-full py-4 space-x-2 overflow-x-scroll'>
               {typesData.map((type) => (
                 <li
-                  key={type.name}
+                  key={type}
                   className='flex-none w-20 text-center text-xs text-black font-semibold rounded-full px-4 pt-[4px] pb-[6px] capitalize cursor-pointer'
-                  style={{ backgroundColor: `var(--${type.name})`}}
-                  onClick={() => filterByType(type.name)}
+                  style={{ backgroundColor: `var(--${type})`}}
+                  onClick={() => filterByType(type)}
                 >
-                  {type.name}
+                  {type}
                 </li>
               ))}
             </ul>
@@ -95,7 +116,7 @@ export default function Home({ pokemonList, typesData }) {
       {/* Display the pokemon cards */}
       <ul className='w-full max-w-2xl space-y-4 my-8 mx-auto'>
 
-        {(!searchValue.length >= 1 && filteredPokemon.length === 0) && pokemonList20.map((poke) => (
+        {(!searchValue.length >= 1 && filteredPokemon.length === 0) && pokemonToShow.map((poke) => (
           <li key={poke.id}>
             <Link href={`/pokemon?id=${poke.id}`}>
               <a>
@@ -150,10 +171,6 @@ export default function Home({ pokemonList, typesData }) {
 export async function getStaticProps() {
   try {
 
-    const fetchTypes = await fetch('https://pokeapi.co/api/v2/type/');
-    const typesObj = await fetchTypes.json();
-    const typesData = typesObj.results;
-
     let pokemonArray = [];
     const pokemonNumber = 898;
 
@@ -174,14 +191,14 @@ export async function getStaticProps() {
 
       return {
         id: pokemon.id,
-        name: pokemon.name,
+        name: pokemon.species.name,
         image: imageUrl,
         types: pokemon.types.map(type => type.type.name),
       }
     });
     
   return {
-    props: { pokemonList, typesData },
+    props: { pokemonList },
   };
   
   } catch (error) {
