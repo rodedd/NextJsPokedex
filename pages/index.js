@@ -5,6 +5,7 @@ import Layout from '../components/Layout';
 import SearchBar from '../components/SearchBar';
 import NavButtons from '../components/NavButtons';
 import PokemonCard from '../components/PokemonCard';
+import TypesFilter from '../components/TypesFilter';
 
 export default function Home({ pokemonList }) {
 
@@ -16,27 +17,6 @@ export default function Home({ pokemonList }) {
   const [pokemonToShow, setPokemonToShow] = useState(pokemonList.slice(listStart, listEnd));
   const [searchValue, setSearchValue] = useState('');
   const [filteredPokemon, setFilteredPokemon] = useState([]);
-
-  const typesData = [
-    'normal',
-    'grass',
-    'water',
-    'fire',
-    'electric',
-    'flying',
-    'fighting',
-    'psychic',
-    'dark',
-    'ghost',
-    'ice',
-    'dragon',
-    'ground',
-    'rock',
-    'bug',
-    'poison',
-    'steel',
-    'fairy',
-  ]
 
   const nextPage = () => {
     setListStart(listStart + pokemonLimit);
@@ -67,14 +47,6 @@ export default function Home({ pokemonList }) {
       return pokemonNameLowerCase.includes(searchedPokemonLowerCase);
     });
   };
-
-  const filterByType = (type) => {
-    setFilteredPokemon(pokemonList.filter(pokemon => (pokemon.types[0] === type || pokemon.types[1] === type)))
-  }
-
-  const clearFilter = () => {
-    setFilteredPokemon([]);
-  }
   
   return (
     <Layout title='Pokédex'>
@@ -84,34 +56,20 @@ export default function Home({ pokemonList }) {
         <h1 className='text-3xl font-bold'>Pokédex</h1>
       </div>
 
+      {/* Searchbar */}
       <SearchBar
         searchValue={searchValue}
         onSearchValueChange={onSearchValueChange}
       />
 
       {/* Filter by types */}
-        {(!searchValue.length >= 1) &&
-          <div className='w-full max-w-2xl mx-auto my-8'>
-            <div className='flex justify-between items-center'>
-              <p className='font-medium'>Filter by type</p>
-              {filteredPokemon.length != 0 &&
-                <span onClick={clearFilter} className='text-sm text-red-500 ring-2 ring-red-500 rounded-full px-2 cursor-pointer'>Clear filters <span>&#10754;</span></span>
-              }
-            </div>
-            <ul className='flex w-full py-4 space-x-2 overflow-x-scroll'>
-              {typesData.map((type) => (
-                <li
-                  key={type}
-                  className='flex-none w-20 text-center text-xs text-black font-semibold rounded-full px-4 pt-[4px] pb-[6px] capitalize cursor-pointer'
-                  style={{ backgroundColor: `var(--${type})`}}
-                  onClick={() => filterByType(type)}
-                >
-                  {type}
-                </li>
-              ))}
-            </ul>
-          </div>
-        }
+      {(!searchValue.length >= 1) && 
+        <TypesFilter
+          filteredPokemon={filteredPokemon}
+          setFilteredPokemon={setFilteredPokemon}
+          pokemonList={pokemonList}
+        />
+      }
 
       {/* Display the pokemon cards */}
       <ul className='w-full max-w-2xl space-y-4 my-8 mx-auto'>
@@ -172,7 +130,7 @@ export async function getStaticProps() {
   try {
 
     let pokemonArray = [];
-    const pokemonNumber = 898;
+    const pokemonNumber = 50;
 
     const getPokemon = async (id) => {
       const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
