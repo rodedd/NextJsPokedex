@@ -1,52 +1,39 @@
-import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+
 import Layout from '../components/Layout';
 import SearchBar from '../components/SearchBar';
 import NavButtons from '../components/NavButtons';
 import PokemonCard from '../components/PokemonCard';
 import TypesFilter from '../components/TypesFilter';
 
+import usePokemon from '../hooks/usePokemon';
+import NoResults from '../components/NoResults';
+
 export default function Home({ pokemonList }) {
 
   console.log(pokemonList)
-  const pokemonLimit = 20;
+  
+  const {
+    states,
+    stateUpdaters,
+  } = usePokemon({ pokemonList });
 
-  const [listStart, setListStart] = useState(0);
-  const [listEnd, setListEnd] = useState(pokemonLimit);
-  const [pokemonToShow, setPokemonToShow] = useState(pokemonList.slice(listStart, listEnd));
-  const [searchValue, setSearchValue] = useState('');
-  const [filteredPokemon, setFilteredPokemon] = useState([]);
+  const {
+    listStart,
+    listEnd,
+    pokemonToShow,
+    searchValue,
+    filteredPokemon,
+    searchedPokemon,
+  } = states;
 
-  const nextPage = () => {
-    setListStart(listStart + pokemonLimit);
-    setListEnd(listEnd + pokemonLimit);
-    setPokemonToShow(pokemonList.slice((listStart + pokemonLimit), (listEnd + pokemonLimit)))
-  }
-
-  const previousPage = () => {
-    if(listStart != 0) {
-      setListStart(listStart - pokemonLimit);
-      setListEnd(listEnd - pokemonLimit);
-      setPokemonToShow(pokemonList.slice((listStart - pokemonLimit), (listEnd - pokemonLimit)))
-    }
-  }
-
-  const onSearchValueChange = (e) => {
-    setSearchValue(e.target.value)
-  }
-
-  let searchedPokemon = [];
-
-  if(!searchValue.length >= 1) {
-    searchedPokemon = pokemonToShow;
-  } else {
-    searchedPokemon = pokemonList.filter(pokemon => {
-      const pokemonNameLowerCase = pokemon.name.toLowerCase();
-      const searchedPokemonLowerCase = searchValue.toLowerCase();
-      return pokemonNameLowerCase.includes(searchedPokemonLowerCase);
-    });
-  };
+  const {
+    setFilteredPokemon,
+    nextPage,
+    previousPage,
+    onSearchValueChange,
+  } = stateUpdaters;
   
   return (
     <Layout title='Pokédex'>
@@ -74,6 +61,7 @@ export default function Home({ pokemonList }) {
       {/* Display the pokemon cards */}
       <ul className='w-full max-w-2xl space-y-4 my-8 mx-auto'>
 
+        {/* Display normal list */}
         {(!searchValue.length >= 1 && filteredPokemon.length === 0) && pokemonToShow.map((poke) => (
           <li key={poke.id}>
             <Link href={`/pokemon?id=${poke.id}`}>
@@ -84,6 +72,7 @@ export default function Home({ pokemonList }) {
           </li>
         ))}
 
+        {/* Display filtered by types list */}
         {(!searchValue.length >= 1 && filteredPokemon.length != 0) && filteredPokemon.map((poke) => (
           <li key={poke.id}>
             <Link href={`/pokemon?id=${poke.id}`}>
@@ -94,6 +83,7 @@ export default function Home({ pokemonList }) {
           </li>
         ))}
 
+        {/* Display searched list */}
         {(searchValue.length >= 1) && searchedPokemon.map((poke) => (
           <li key={poke.id}>
             <Link href={`/pokemon?id=${poke.id}`}>
@@ -104,15 +94,14 @@ export default function Home({ pokemonList }) {
           </li>
         ))}
 
+        {/* No results */}
         {(searchValue.length >= 1 && searchedPokemon.length === 0) && 
-          <li className='w-full h-full text-center text-xl'>
-            Ningún resultado coincide con tu búsqueda :(
-          </li>
+          <NoResults />
         }
 
-        
       </ul>
       
+      {/* Display nav buttons only on the normal list */}
       {(!searchValue.length >= 1 && filteredPokemon.length === 0) &&
         <NavButtons
           previousPage={previousPage}
