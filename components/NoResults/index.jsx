@@ -2,9 +2,9 @@ import React from 'react';
 
 const NoResults = () => {
   return (
-    <li className='w-full h-full text-center text-xl'>
+    <p className='w-full mt-10 text-center text-xl'>
       No results match your search :(
-    </li>
+    </p>
   );
 };
 

@@ -16,8 +16,7 @@ export default function Home({ pokemonList }) {
   } = usePokemon({ pokemonList });
 
   const {
-    listStart,
-    listEnd,
+    listLimit,
     pokemonToShow,
     searchValue,
     filteredPokemon,
@@ -43,44 +42,43 @@ export default function Home({ pokemonList }) {
       />
 
       {/* Filter by types */}
-      {(!searchValue.length >= 1) && 
+      {(!searchValue.length >= 1) ? 
         <TypesFilter
           filteredPokemon={filteredPokemon}
           setFilteredPokemon={setFilteredPokemon}
           pokemonList={pokemonList}
-        />
+        /> : null
       }
 
       {/* Display the pokemon cards */}
       {/* Display normal list */}
-      {(!searchValue.length >= 1 && filteredPokemon.length === 0) &&
-        <PokemonCard pokemonList={pokemonToShow}/>
+      {(!searchValue.length >= 1 && filteredPokemon.length === 0) ?
+        <PokemonCard pokemonList={pokemonToShow}/> : null
       }
 
       {/* Display filtered by types list */}
-      {(!searchValue.length >= 1 && filteredPokemon.length != 0) && 
-        <PokemonCard pokemonList={filteredPokemon}/>
+      {(!searchValue.length >= 1 && filteredPokemon.length != 0) ? 
+        <PokemonCard pokemonList={filteredPokemon}/> : null
       }
 
       {/* Display searched list */}
-      {(searchValue.length >= 1) && 
-        <PokemonCard pokemonList={searchedPokemon}/>
+      {(searchValue.length >= 1 && searchedPokemon.length >= 1) ? 
+        <PokemonCard pokemonList={searchedPokemon}/> : null
       }
 
       {/* No results */}
-      {(searchValue.length >= 1 && searchedPokemon.length === 0) && 
-        <NoResults />
+      {(searchValue.length >= 1 && searchedPokemon.length === 0) ? 
+        <NoResults /> : null
       }
       
       {/* Display nav buttons only on the normal list */}
-      {(!searchValue.length >= 1 && filteredPokemon.length === 0) &&
+      {(!searchValue.length >= 1 && filteredPokemon.length === 0) ?
         <NavButtons
           previousPage={previousPage}
           nextPage={nextPage}
-          listStart={listStart}
-          listEnd={listEnd}
+          listLimit={listLimit}
           fullListLength={pokemonList.length}
-        />
+        /> : null
       }
 
     </Layout>

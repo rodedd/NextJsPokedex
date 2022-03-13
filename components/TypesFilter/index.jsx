@@ -38,7 +38,7 @@ const TypesFilter = ({ filteredPokemon, setFilteredPokemon, pokemonList }) => {
           <span onClick={clearFilter} className='text-sm text-red-500 ring-2 ring-red-500 rounded-full px-2 cursor-pointer'>Clear filters <span>&#10754;</span></span>
         }
       </div>
-      <ul className='flex w-full py-4 space-x-2 overflow-x-scroll'>
+      <ul className='flex w-full py-4 space-x-2 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 hover:scrollbar-thumb-gray-500'>
         {typesData.map((type) => (
           <li
             key={type}

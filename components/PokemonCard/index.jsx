@@ -3,7 +3,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 const PokemonCard = ({ pokemonList }) => {
-  console.log(pokemonList)
   return (
     <ul className='w-full max-w-2xl space-y-4 my-8 mx-auto'>
 

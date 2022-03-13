@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const usePokemon = ({ pokemonList }) => {
   const pokemonLimit = 20;
 
-  const [listStart, setListStart] = useState(0);
-  const [listEnd, setListEnd] = useState(pokemonLimit);
-  const [pokemonToShow, setPokemonToShow] = useState(pokemonList.slice(listStart, listEnd));
+  const [listLimit, setListLimit] = useState([0, pokemonLimit]);
+  const [pokemonToShow, setPokemonToShow] = useState(pokemonList.slice(listLimit[0], listLimit[1]));
   const [searchValue, setSearchValue] = useState('');
+  const [searchedPokemon, setSearchedPokemon] = useState([]);
   const [filteredPokemon, setFilteredPokemon] = useState([]);
 
   const nextPage = () => {
-    setListStart(listStart + pokemonLimit);
-    setListEnd(listEnd + pokemonLimit);
-    setPokemonToShow(pokemonList.slice((listStart + pokemonLimit), (listEnd + pokemonLimit)))
+    setListLimit([(listLimit[0] + pokemonLimit), (listLimit[1] + pokemonLimit)]);
+    setPokemonToShow(pokemonList.slice((listLimit[0] + pokemonLimit), (listLimit[1] + pokemonLimit)))
   }
 
   const previousPage = () => {
-    if(listStart != 0) {
-      setListStart(listStart - pokemonLimit);
-      setListEnd(listEnd - pokemonLimit);
-      setPokemonToShow(pokemonList.slice((listStart - pokemonLimit), (listEnd - pokemonLimit)))
+    if(listLimit[0] != 0) {
+      setListLimit([(listLimit[0] - pokemonLimit), (listLimit[1] - pokemonLimit)]);
+      setPokemonToShow(pokemonList.slice((listLimit[0] - pokemonLimit), (listLimit[1] - pokemonLimit)))
     }
   }
 
@@ -27,20 +25,21 @@ const usePokemon = ({ pokemonList }) => {
     setSearchValue(e.target.value)
   }
 
-  let searchedPokemon = [];
-  if(!searchValue.length >= 1) {
-    searchedPokemon = pokemonToShow;
-  } else {
-    searchedPokemon = pokemonList.filter(pokemon => {
-      const pokemonNameLowerCase = pokemon.name.toLowerCase();
-      const searchedPokemonLowerCase = searchValue.toLowerCase();
-      return pokemonNameLowerCase.includes(searchedPokemonLowerCase);
-    });
-  };
+  useEffect(() => {
+    if(!searchValue.length >= 1) {
+      setSearchedPokemon(pokemonToShow);
+    } else {
+      let searchedPokemonNew = pokemonList.filter(pokemon => {
+        const pokemonNameLowerCase = pokemon.name.toLowerCase();
+        const searchedPokemonLowerCase = searchValue.toLowerCase();
+        return pokemonNameLowerCase.includes(searchedPokemonLowerCase);
+      });
+      setSearchedPokemon(searchedPokemonNew);
+    };
+  }, [searchValue, pokemonList, pokemonToShow]);
 
   const states = {
-    listStart,
-    listEnd,
+    listLimit,
     pokemonToShow,
     searchValue,
     filteredPokemon,
