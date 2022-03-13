@@ -89,7 +89,7 @@ export async function getStaticProps() {
   try {
 
     let pokemonArray = [];
-    const pokemonNumber = 50;
+    const pokemonNumber = 898;
 
     const getPokemon = async (id) => {
       const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
